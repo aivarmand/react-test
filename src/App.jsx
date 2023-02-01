@@ -25,7 +25,6 @@ const pariPokemonid = async (url) => {
 }
 
 const pariPokemoniInfo = async (url) => {
-  console.log(url)
   const pokemoniInfo = await fetch(url)
   setValitudPokemon(await pokemoniInfo.json())
 }
@@ -35,17 +34,25 @@ const pariPokemoniInfo = async (url) => {
       <Pais />
       {valitudPokemon ? 
         <div>
-          <a className='kustuta' onClick={() => { setValitudPokemon(undefined)}}>Kustuta valitud pokemon.</a>
-          <br />
-          <br />
           <PokemoniInfo pokemon={valitudPokemon} />
+          <br />
+          <br />
+          <div className='nupud'>
+            <div className='kustuta' onClick={() => { pariPokemoniInfo(`https://pokeapi.co/api/v2/pokemon/${valitudPokemon.id - 1}`) }}>Eelmine</div>
+            <div className='kustuta' onClick={() => { pariPokemoniInfo(`https://pokeapi.co/api/v2/pokemon/${valitudPokemon.id + 1}`) }}>Järgmine</div>
+          </div>
+          <br />
+          <br />
+          <a className='kustuta' onClick={() => { setValitudPokemon(undefined)}}>Tagasi</a>
         </div> : 
         <div>
         <PokemonideList pokemonid={pokemonid} pariPokemoniInfo={pariPokemoniInfo} />
+        <br />
+        <br />
         <div  className='navigeerimine' >
-          <span onClick={() => { pariPokemonid(eelmineUrl)}}> {'<'} Eelmine leht</span>
+          {eelmineUrl ? <span onClick={() => { pariPokemonid(eelmineUrl)}}> {'<'} Eelmine leht</span> : null}
           <span> | </span>
-          <span onClick={() => { pariPokemonid(jargmineUrl)}}>Järgmine leht {'>'}</span>
+          {jargmineUrl ? <span onClick={() => { pariPokemonid(jargmineUrl)}}>Järgmine leht {'>'}</span> : null}
         </div>
         </div>}
       <br />
